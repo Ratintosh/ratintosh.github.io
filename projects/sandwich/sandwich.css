@@ -1,0 +1,79 @@
+
+
+div.header {
+  text-align: center;
+  padding-top: 50px;
+  font-size: 50px;
+  color: #ebebeb;
+  font-family:'Arial'
+}
+
+div.about {
+  padding-top: 50px;
+  font-size: 15px;
+  color: #ebebeb;
+  letter-spacing: 1.5px;
+  text-align: center;
+  font-family:'Arial'
+}
+
+div.body {
+  padding-top: 30px;
+  font-size: 30px;
+  color: #ebebeb;
+  letter-spacing: 1.5px;
+  text-align: center;
+  font-family:'Arial'
+}
+
+
+
+
+
+.button {
+   border-top: 1px solid #ebebeb;
+   background: #ebebeb;
+   background: -webkit-gradient(linear, left top, left bottom, from(#ebebeb), to(#ebebeb));
+   background: -webkit-linear-gradient(top, #ebebeb, #ebebeb);
+   background: -moz-linear-gradient(top, #ebebeb, #ebebeb);
+   background: -ms-linear-gradient(top, #ebebeb, #ebebeb);
+   background: -o-linear-gradient(top, #ebebeb, #ebebeb);
+   padding: 15.5px 31px;
+   -webkit-border-radius: 11px;
+   -moz-border-radius: 11px;
+   border-radius: 11px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #2e3136;
+   font-size: 30px;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border-top-color: #adadad;
+   background: #adadad;
+   color: #2e3136;
+   }
+.button:active {
+   border-top-color: #cccccc;
+   background: #cccccc;
+   }
+
+
+div.spacer {
+  padding-top: 20px;
+}
+
+   div.container {
+     height: auto;
+     margin-left: auto;
+     margin-right: auto;
+     background-color: #232529;
+     width: 300px;
+     border: 0px;
+     padding: 10px;
+   }
+
+   html, body {margin: 0; height: 100%; overflow: hidden}

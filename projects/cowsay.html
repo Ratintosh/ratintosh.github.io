@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>CowSay Web</h1>
+        <hr>
+        <p>Input:</p>
+        <input id="txt" type="text" class="form-control" placeholder="Text goes here">
+        <br>
+        <p>Select Cow:</p>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" id="selectedCow" type="button" data-toggle="dropdown">Default Cow
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a onclick="changeCow('default')" href="#">Default Cow</a></li>
+              <li><a onclick="changeCow('rat')" href="#">Rat Cow</a></li>
+              <li><a onclick="changeCow('sus')" href="#">Sus Cow</a></li>
+              <li><a onclick="changeCow('monkaw')" href="#">Monkaw Cow</a></li>
+            </ul>
+          </div> 
+          <br>
+          <button id="speakCowThing" type="button" onclick="submit()" class="btn btn-success">Submit</button>
+          <br>
+          <br>
+          <p>Output:</p>
+          <pre id="output"></pre>
+          <h3>Planned Features:</h3>
+          <p>- Ability to upload your own .cow file</p>
+          <p>- Colored output (maybe)</p>
+          <p>- Custom ascii art</p>
+          <hr>
+          <p>Made by SpaceRat in 1 hour</p>
+          <p>If you ever feel useless, just keep in mind someone had to copy and paste line for line each ascii image into an array. (The among us one took ages)</p>
+    <!--End of container-->
+    </div>
+    <script>
+        var output = document.getElementById('output')
+        var selectedCow = 'default'
+        var defaultCow = ['        \\   ^__^','         \\  (oo)\\_______','            (__)\       )\\/\\','                ||----w |','                ||     ||']
+        var susCow = ['    \\','     \\','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀','⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆ ⠀⠀⠀⠀    ⠀⠀⣿⣷⠀','⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀','⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀','⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀','⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀','⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀','⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀','⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀','⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀','⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀']
+        var ratCow = ['    \\','     \\','          ___'," _  _  .-'   '-.",'(.)(.)/         \\   jgs',' /@@             ;','o_\\-mm-......-mm`~~~~~~~~~~~~~~~~`⠀⠀⠀⠀']
+        var monkawCow = ['    \\','     \\','⣠⠴⠖⠒⠚⠋⠉⠉⠉⠙⠒⠒⠲⢤⡀⢀⡀⠤⠐⠒⠐⠒⠒⠒⠒⠒⠒⠶⢮⣿','⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠙⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈','⠀⠀⠀⠀⠀⠀⣴⣿⣙⣿⣿⡄⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣹⣷⣦⠀','⠀⠀⠀⠀⠀⠀⢻⣯⣨⣏⣹⠃⠀⠀⠀⡘⠀⠀⠀⠀⠀⠀⠀⠀⠈⢏⢈⣧⠝⠀','⣄⡀⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⢀⡤⠞⢳⡤⣄⣀⡀⠀⠀⠀⠀⠀⠀⢀⣀⣠⡤','⢦⣍⡛⠒⠶⠤⢤⣤⣤⠶⠶⣛⣡⠀⣰⠟⠀⠀⠈⠉⠙⠛⠛⠛⠛⠛⠉⠉⢀⣴','⠀⠉⠛⠛⠓⠒⠶⠶⠖⠛⢛⣋⡵⠛⠉⠀⠀⠢⢄⡀⠀⠀⠀⠀⠀⠀⣀⡴⠛⠁','⠀⠀⠀⠀⠀⠀⠀⠀⣤⠾⠛⠉⠀⠀⠀⠀⠀⠀⠀⠉⠻⣶⠶⠶⠶⠟⠛⣇⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠥⠀⠀⠀⠀⠈⢷⡀','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻','⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀','⡛⠛⠛⠹⠿⠻⠶⢶⣦⣤⣤⣀⣀⣀⣀⣀⣀⣀⣀⢀⣀⣀⡀⣀⣀⣀⣠⣴⡶⠿','⣶⣶⣦⣤⣴⣄⣀⡨⠀⡁⠈⠉⠉⠛⠻⠛⠛⠛⠿⠿⠿⠿⠟⠛⠛⠋⠉⢈⣨⣤','⠀⠀⠀⠉⠉⠉⠉⠋⠛⠳⢷⠶⣾⣯⣦⣤⣤⣤⣤⣤⣤⣤⣴⣶⡾⣧⣞⠛⣻⠁','⠿⠿⠷⠶⢿⣦⣤⣦⣰⣄⣄⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣰⣼⠟⠀⠀⠀']
+        
+        var input = document.getElementById("txt");
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keydown", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("speakCowThing").click();
+            }
+        }); 
+        function changeCow(cow){
+            if(cow == "default")
+            {
+                selectedCow = cow
+                document.getElementById('selectedCow').innerHTML = "Default Cow <span class='caret'></span>"
+            }
+            else if (cow == "rat")
+            {
+                selectedCow = cow
+                document.getElementById('selectedCow').innerHTML = "Rat Cow <span class='caret'></span>"
+            }
+            else if (cow == "sus")
+            {
+                selectedCow = cow
+                document.getElementById('selectedCow').innerHTML = "Sus Cow <span class='caret'></span>"
+            }
+            else if (cow == "monkaw")
+            {
+                selectedCow = cow
+                document.getElementById('selectedCow').innerHTML = "Monkaw Cow <span class='caret'></span>"
+            }
+        }
+        function drawBubble(){
+            output.innerHTML = " _"
+                for(i in document.getElementById('txt').value)
+                {
+                    output.innerHTML = output.innerHTML + "_"
+                }
+                output.innerHTML = output.innerHTML + "_" //add extra underscore after text
+                output.innerHTML = output.innerHTML + "<br>" //line break
+                output.innerHTML = output.innerHTML + "< " //bubble edge
+                for(i in document.getElementById('txt').value)
+                {
+                    output.innerHTML = output.innerHTML + document.getElementById('txt').value[i]
+                }
+                output.innerHTML = output.innerHTML + " >" //bubble edge
+                output.innerHTML = output.innerHTML + "<br>" //line break
+                //draw bubble bottom
+                output.innerHTML = output.innerHTML + " -"
+                for(i in document.getElementById('txt').value)
+                {
+                    output.innerHTML = output.innerHTML + "-"
+                }
+                output.innerHTML = output.innerHTML + "-" //add extra underscore after text
+                output.innerHTML = output.innerHTML + "<br>" //line break
+        }
+        function submit(){
+            if(selectedCow == "default")
+            {
+                drawBubble()
+                for(i in defaultCow)
+                {
+                    output.innerHTML = output.innerHTML + defaultCow[i] + "<br>"
+                }
+            }
+            else if(selectedCow == "sus")
+            {
+                drawBubble()
+                for(i in susCow)
+                {
+                    output.innerHTML = output.innerHTML + susCow[i] + "<br>"
+                }
+            }
+            else if(selectedCow == "rat")
+            {
+                drawBubble()
+                for(i in ratCow)
+                {
+                    output.innerHTML = output.innerHTML + ratCow[i] + "<br>"
+                }
+            }
+            else if(selectedCow == "monkaw")
+            {
+                drawBubble()
+                for(i in monkawCow)
+                {
+                    output.innerHTML = output.innerHTML + monkawCow[i] + "<br>"
+                }
+            }
+        }
+    </script>
+</body>
+</html>

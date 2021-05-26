@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <title>Cowsay.js</title>
-  <link rel="icon" type="image/gif/png" href="../../img/3Pl2nMKs_400x400.jpg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    #upload{
+        display:none
+    }
+  </style>
 </head>
 <body>
     <div class="container">
@@ -28,6 +32,7 @@
               <li><a onclick="changeCow('monkaw')" href="#">Monkaw Cow</a></li>
             </ul>
           </div> 
+          <p>Or, <input id="upload" type="file" accept=".txt,.cow"/><a href="" id="upload_link">Upload a .cow file</a>​</p>
           <br>
           <button id="speakCowThing" type="button" onclick="submit()" class="btn btn-success">Submit</button>
           <br>
@@ -50,9 +55,77 @@
         var susCow = ['    \\','     \\','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀','⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆ ⠀⠀⠀⠀    ⠀⠀⣿⣷⠀','⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀','⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀','⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀','⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀','⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀','⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀','⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀','⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀','⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀']
         var ratCow = ['    \\','     \\','          ___'," _  _  .-'   '-.",'(.)(.)/         \\   jgs',' /@@             ;','o_\\-mm-......-mm`~~~~~~~~~~~~~~~~`⠀⠀⠀⠀']
         var monkawCow = ['    \\','     \\','⣠⠴⠖⠒⠚⠋⠉⠉⠉⠙⠒⠒⠲⢤⡀⢀⡀⠤⠐⠒⠐⠒⠒⠒⠒⠒⠒⠶⢮⣿','⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠙⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈','⠀⠀⠀⠀⠀⠀⣴⣿⣙⣿⣿⡄⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣹⣷⣦⠀','⠀⠀⠀⠀⠀⠀⢻⣯⣨⣏⣹⠃⠀⠀⠀⡘⠀⠀⠀⠀⠀⠀⠀⠀⠈⢏⢈⣧⠝⠀','⣄⡀⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⢀⡤⠞⢳⡤⣄⣀⡀⠀⠀⠀⠀⠀⠀⢀⣀⣠⡤','⢦⣍⡛⠒⠶⠤⢤⣤⣤⠶⠶⣛⣡⠀⣰⠟⠀⠀⠈⠉⠙⠛⠛⠛⠛⠛⠉⠉⢀⣴','⠀⠉⠛⠛⠓⠒⠶⠶⠖⠛⢛⣋⡵⠛⠉⠀⠀⠢⢄⡀⠀⠀⠀⠀⠀⠀⣀⡴⠛⠁','⠀⠀⠀⠀⠀⠀⠀⠀⣤⠾⠛⠉⠀⠀⠀⠀⠀⠀⠀⠉⠻⣶⠶⠶⠶⠟⠛⣇⠀⠀','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠥⠀⠀⠀⠀⠈⢷⡀','⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻','⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀','⡛⠛⠛⠹⠿⠻⠶⢶⣦⣤⣤⣀⣀⣀⣀⣀⣀⣀⣀⢀⣀⣀⡀⣀⣀⣀⣠⣴⡶⠿','⣶⣶⣦⣤⣴⣄⣀⡨⠀⡁⠈⠉⠉⠛⠻⠛⠛⠛⠿⠿⠿⠿⠟⠛⠛⠋⠉⢈⣨⣤','⠀⠀⠀⠉⠉⠉⠉⠋⠛⠳⢷⠶⣾⣯⣦⣤⣤⣤⣤⣤⣤⣤⣴⣶⡾⣧⣞⠛⣻⠁','⠿⠿⠷⠶⢿⣦⣤⣦⣰⣄⣄⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣰⣼⠟⠀⠀⠀']
-        
+        var customCowData = new Array();
         var input = document.getElementById("txt");
 
+        //upload .cow file
+        $(function(){
+            $("#upload_link").on('click', function(e){
+                e.preventDefault();
+                $("#upload:hidden").trigger('click');
+            });
+        });
+
+        //listen for file upload
+        var customCow = document.getElementById('upload');
+        customCow.onchange = function(){
+            var fileToLoad = document.getElementById("upload").files[0]; //get cow data
+            var inScope = false
+            var fileReader = new FileReader(); //init filereader
+            fileReader.onload = function(file){ //onload
+                var data = file.target.result; //set data to the text inside the uploaded file
+                var dataSplit = data.split('\n');
+                for(var i = 0;i < dataSplit.length;i++){
+                    //console.log(dataSplit[i])
+                    //console.log("the split shit: " + dataSplit[i].replace(/ /g,''))
+                    if(dataSplit[i].replace(/ /g,'').includes("$the_cow=<<"))
+                    {
+                        id = dataSplit[i].replace(/ /g,'')
+                        id = id.replace("$the_cow=<<", '')
+                        console.log("ID: " + id)
+                        if(id.includes(";"))
+                            id = id.replace(';','')
+                        inScope = true
+                        continue
+                    }
+                    else
+                    {
+                        //console.log("lets see.. are we in scope?")
+                        if(inScope == true)
+                        {
+                            console.log("ID: " + id)
+                            if(dataSplit[i].includes(id))
+                            {
+                                console.log("end of cow!")
+                                break
+                            }
+                            else if(dataSplit[i].includes("$thoughts"))
+                            {
+                                console.log("Replacing the funny $thoughts!")
+                                dataSplit[i] = dataSplit[i].replace('$thoughts', '\\')
+                                customCowData.push(dataSplit[i])
+                                continue
+                            }
+                            else
+                            {
+                                console.log("pushing ascii art...")
+                                customCowData.push(dataSplit[i])
+                                continue
+                            }
+                        }
+                        else
+                        {
+                            console.log("hmm we might not be in scope! oh noes!")
+                        }
+                    }
+                    
+                }
+                document.getElementById('selectedCow').innerHTML = document.getElementById("upload").files[0].name + " (Custom) <span class='caret'></span>"
+
+            };
+        fileReader.readAsText(fileToLoad, "UTF-8"); //the encoding of the file
+        };
+        //end of function
         // Execute a function when the user releases a key on the keyboard
         input.addEventListener("keydown", function(event) {
             // Number 13 is the "Enter" key on the keyboard
@@ -64,6 +137,7 @@
             }
         }); 
         function changeCow(cow){
+            customCowData.length = 0;
             if(cow == "default")
             {
                 selectedCow = cow
@@ -110,36 +184,47 @@
                 output.innerHTML = output.innerHTML + "<br>" //line break
         }
         function submit(){
-            if(selectedCow == "default")
+            if(customCowData.length == 0)
             {
-                drawBubble()
-                for(i in defaultCow)
+                if(selectedCow == "default")
                 {
-                    output.innerHTML = output.innerHTML + defaultCow[i] + "<br>"
+                    drawBubble()
+                    for(i in defaultCow)
+                    {
+                        output.innerHTML = output.innerHTML + defaultCow[i] + "<br>"
+                    }
+                }
+                else if(selectedCow == "sus")
+                {
+                    drawBubble()
+                    for(i in susCow)
+                    {
+                        output.innerHTML = output.innerHTML + susCow[i] + "<br>"
+                    }
+                }
+                else if(selectedCow == "rat")
+                {
+                    drawBubble()
+                    for(i in ratCow)
+                    {
+                        output.innerHTML = output.innerHTML + ratCow[i] + "<br>"
+                    }
+                }
+                else if(selectedCow == "monkaw")
+                {
+                    drawBubble()
+                    for(i in monkawCow)
+                    {
+                        output.innerHTML = output.innerHTML + monkawCow[i] + "<br>"
+                    }
                 }
             }
-            else if(selectedCow == "sus")
+            else if(customCowData.length >= 1)
             {
                 drawBubble()
-                for(i in susCow)
+                for(i in customCowData)
                 {
-                    output.innerHTML = output.innerHTML + susCow[i] + "<br>"
-                }
-            }
-            else if(selectedCow == "rat")
-            {
-                drawBubble()
-                for(i in ratCow)
-                {
-                    output.innerHTML = output.innerHTML + ratCow[i] + "<br>"
-                }
-            }
-            else if(selectedCow == "monkaw")
-            {
-                drawBubble()
-                for(i in monkawCow)
-                {
-                    output.innerHTML = output.innerHTML + monkawCow[i] + "<br>"
+                    output.innerHTML = output.innerHTML + customCowData[i] + "<br>"
                 }
             }
         }

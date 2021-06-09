@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                font-family: 'Courier New', monospace;
+                text-align:left;
+                padding-left:10px;
+                color:greenyellow;
+                background-color:black;
+            }
+            hr{
+                border: 1px dashed greenyellow;
+            }
+        </style>
+    </head>
+    <body>
+        <p id="dir">/hotdog/hotdog.png/</p>
+        <hr>
+        <p id="title"></p>
+        <img src="" id="hotdog">
+        <script>
+            var title=document.getElementById("title")
+            var titleText="Loading hotdog.png...Unkown byte 6C6F6C206869 at 0x0FF0...Unkown byte 746869732069736E2774207265616C207374756666 at 0x010E...Unkown byte 6C6F6C206869 at 0x0FF0...Deleting System32...Done. Downloading the latest flemes...Done. Beginning hotdog.png render..........Done. Completing your missing homework..Done. Easy lol. Cleaning up....Done. Loading..Done. Rendering hotdog.png Preview.......Error: this hotdog image is a corndog! oh no! Downloading real hotdog.png from URL https://images.squarespace-cdn.com/content/v1/5dd8630d09ab5908e35b35a0/1574463308006-PDSJDF9EEEB0TJG7TL1N/ke17ZwdGBToddI8pDm48kA_jXp83b5iRf88G--swseBZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVHozJ0d-Cj-FLeMNQ9ayQPHyHdfNMSWfP1kGgAceR5GTyb8BodarTVrzIWCp72ioWw/img-HotDogStock-1080x675.png?format=1000w...............Done. Cleansing https://images.squarespace-cdn.com/content/v1/5dd8630d09ab5908e35b35a0/1574463308006-PDSJDF9EEEB0TJG7TL1N/ke17ZwdGBToddI8pDm48kA_jXp83b5iRf88G--swseBZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVHozJ0d-Cj-FLeMNQ9ayQPHyHdfNMSWfP1kGgAceR5GTyb8BodarTVrzIWCp72ioWw/img-HotDogStock-1080x675.png?format=1000w of any corndogs...Done. Rendering hotdog.png.........."
+            var i = 0;
+
+            function drawTitle(){
+                setTimeout(function() {
+                    title.innerHTML = title.innerHTML + titleText[i]
+                    i++;
+                    if (i < titleText.length) {
+                        drawTitle();
+                    }
+                    else
+                    {
+                        title.innerHTML = ""
+
+                        document.getElementById("hotdog").setAttribute("src","https://images.squarespace-cdn.com/content/v1/5dd8630d09ab5908e35b35a0/1574463308006-PDSJDF9EEEB0TJG7TL1N/ke17ZwdGBToddI8pDm48kA_jXp83b5iRf88G--swseBZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVHozJ0d-Cj-FLeMNQ9ayQPHyHdfNMSWfP1kGgAceR5GTyb8BodarTVrzIWCp72ioWw/img-HotDogStock-1080x675.png?format=1000w")
+                    }
+                }, 0)
+            }
+            drawTitle()
+        </script>
+    </body>
+</html>

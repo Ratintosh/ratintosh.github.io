@@ -43,5 +43,34 @@
   <p>Idk what else to put on this page</p>
 </div>
 
+<script>
+let bufferArray = [];
+let lastKeystrokeTime = Date.now();
+
+//Our cheat code
+const cheatcode = "arrowuparrowuparrowdownarrowdownarrowleftarrowrightarrowleftarrowrightba";
+
+window.addEventListener("keyup", e => {
+  const key = e.key.toLowerCase();
+  const latestKeystrokeTime = Date.now();
+
+  if (latestKeystrokeTime - lastKeystrokeTime > 1500) {
+    bufferArray = [];
+  }
+
+  bufferArray.push(key);
+
+  const word = bufferArray.join("");
+  if (word === cheatcode) {
+    window.location.href = "projects/capybara";
+  }
+
+  lastKeystrokeTime = latestKeystrokeTime;
+
+  console.log(bufferArray);
+});
+
+</script>
+
 </body>
 </html>

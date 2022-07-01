@@ -1,0 +1,22 @@
+.container {
+    font-family:Arial, Helvetica, sans-serif;
+    margin: auto;
+    width: 50%;
+    padding-top:50px;
+    text-align:center;
+}
+input {
+    font-size:24px;
+    border:none;
+    border-width:0px;
+    border-bottom:solid 2px rgb(183, 183, 183);
+    
+}
+input:focus{
+    outline:none;
+    border-bottom:solid 2px rgb(105, 105, 255);
+}
+p{
+    font-size:24px;
+    display:inline-block;
+}

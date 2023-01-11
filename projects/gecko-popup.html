@@ -1,1 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>GECKO</h1>
+    <script>
+      var i = 1
+      var x = 0
+      var y = 0
+      var xspeed = 4
+      var yspeed = 4
+      var ww = 0
+      var wh = 0
+      function myLoop() {
+        setTimeout(function() {
 
+          window.moveTo(Math.floor(Math.random() * screen.width), Math.floor(Math.random() * screen.height))
+          myLoop();
+        }, 10)
+      }
+      
+      myLoop();
+      //
+    </script>
+  </body>
+</html>

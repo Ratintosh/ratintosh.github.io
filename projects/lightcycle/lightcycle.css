@@ -1,0 +1,28 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  line-height:10px;
+  text-align:center;
+  font-family:'Arial';
+  background-color:#000000;
+  height:100%;
+  margin:0;
+}
+h1{
+  color:#1a1a1a;
+}
+h2{
+  color:#1a1a1a;
+}
+h3{
+  color:#1a1a1a;
+}
+canvas {
+  background-color:#1e3448;
+  /*border: 10px solid #142433;
+  border-radius:10px;*/
+  height:100vh
+}

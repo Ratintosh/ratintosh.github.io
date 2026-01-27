@@ -1,6 +1,6 @@
 var canvas = document.getElementById("game")
 var ctx = canvas.getContext("2d")
-
+var title = document.getElementById("title")
 var posX = 15
 var posY = 15
 
@@ -14,13 +14,15 @@ var speed = gridSize
 
 var isGameOver = false
 
+let gameLoop = null;
+
 var playerOneInfo = {
   position: [15, 15],
   body: [[60, canvas.height / 2]], //position player 2 60 units from the left and in the center of the canvas
   movementVector: [gridSize, 0], //start the player going right
   size: gridSize,
   alive: true,
-  color: "#2997ff"
+  color: "#57bcff"
 }
 
 var playerTwoInfo = {
@@ -29,7 +31,7 @@ var playerTwoInfo = {
   movementVector: [-gridSize, 0], //start the player going left
   size: gridSize,
   alive: true,
-  color: "#ff2986"
+  color: "#ff9429"
 }
 
 //i forgot how canvas does its x and y but its weird iirc
@@ -152,23 +154,23 @@ function detectWallCollision() {
   //if player1 is out of bounds
   if (playerOneInfo.body[0][0] < 0 || playerOneInfo.body[0][0] > canvas.width) {
     playerOneInfo.alive = false;
-    clearInterval(gameLoop)
+    stopLoop()
     gameOver(2)
   }
   if (playerOneInfo.body[0][1] < 0 || playerOneInfo.body[0][1] > canvas.height) {
     playerOneInfo.alive = false;
-    clearInterval(gameLoop)
+    stopLoop()
     gameOver(2)
   }
   //if player2 is out of bounds
   if (playerTwoInfo.body[0][0] < 0 || playerTwoInfo.body[0][0] > canvas.width) {
     playerTwoInfo.alive = false;
-    clearInterval(gameLoop)
+    stopLoop()
     gameOver(1)
   }
   if (playerTwoInfo.body[0][1] < 0 || playerTwoInfo.body[0][1] > canvas.height) {
     playerTwoInfo.alive = false;
-    clearInterval(gameLoop)
+    stopLoop()
     gameOver(1)
   }
 }
@@ -178,7 +180,7 @@ function detectOtherCollision(){
     if(playerOneInfo.body[0][0] == playerTwoInfo.body[i][0] && playerOneInfo.body[0][1] == playerTwoInfo.body[i][1]){
       console.log("Blue crashed into red")
       playerOneInfo.alive = false;
-      clearInterval(gameLoop)
+      stopLoop()
       gameOver(2)
     }
   }
@@ -187,80 +189,17 @@ function detectOtherCollision(){
     if(playerTwoInfo.body[0][0] == playerOneInfo.body[i][0] && playerTwoInfo.body[0][1] == playerOneInfo.body[i][1]){
       console.log("Red crashed into blue")
       playerTwoInfo.alive = false;
-      clearInterval(gameLoop)
+      stopLoop()
       gameOver(1)
     }
   }
 }
 
-gameLoop = setInterval(function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //draw players
-  drawPlayerOne();
-  drawPlayerTwo();
-
-  //do logic first
-  detectWallCollision();
-  detectSelfCollision();
-  detectOtherCollision();
-}, 50)
-
-document.getElementById("start").addEventListener("click", function() {
-  document.getElementById("gameSpeedContainer").remove()
-  gameLoop;
-})
-
-function gameOver(winner) {
-  isGameOver = true
-  //ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if(winner == 1){
-    ctx.fillStyle = playerOneInfo.color
-    ctx.font = "30px Arial";
-    textWidth = ctx.measureText("Player 1 Wins").width;
-    ctx.lineWidth = 2;
-    ctx.strokeText("Player 1 Wins", (canvas.width / 2) - (textWidth / 2), canvas.height / 2);
-    ctx.fillText("Player 1 Wins", (canvas.width / 2) - (textWidth / 2), canvas.height / 2);
-    //draw score
-    ctx.font = "20px Arial";
-    string = "Press 'Enter' to try again.";
-    textWidth = ctx.measureText(string).width;
-    ctx.lineWidth = 2;
-    ctx.strokeText(string, (canvas.width / 2) - (textWidth / 2), canvas.height / 2 + 30);
-    ctx.fillText(string, (canvas.width / 2) - (textWidth / 2), canvas.height / 2 + 30);
-
-    startExplosion(playerTwoInfo.color, playerTwoInfo.body[0][0], playerTwoInfo.body[0][1])
-  }else if(winner == 2){
-    ctx.fillStyle = playerTwoInfo.color
-    ctx.font = "30px Arial";
-    textWidth = ctx.measureText("Player 2 Wins").width;
-    ctx.lineWidth = 2;
-    ctx.strokeText("Player 2 Wins", (canvas.width / 2) - (textWidth / 2), canvas.height / 2);
-    ctx.fillText("Player 2 Wins", (canvas.width / 2) - (textWidth / 2), canvas.height / 2);
-    //draw score
-    ctx.font = "20px Arial";
-    string = "Press 'Enter' to try again.";
-    textWidth = ctx.measureText(string).width;
-    ctx.lineWidth = 2;
-    ctx.strokeText(string, (canvas.width / 2) - (textWidth / 2), canvas.height / 2 + 30);
-    ctx.fillText(string, (canvas.width / 2) - (textWidth / 2), canvas.height / 2 + 30);
-
-    startExplosion(playerOneInfo.color, playerOneInfo.body[0][0], playerOneInfo.body[0][1])
-  }
-}
-
-//this function handles resetting the game so you don't have to refresh the page
-function resetGame(){
-  playerOneInfo.alive = true
-  playerTwoInfo.alive = true
-
-  playerOneInfo.body = [[60, canvas.height / 2]]
-  playerOneInfo.movementVector = [gridSize, 0]
-
-
-  playerTwoInfo.body = [[canvas.width - 60, canvas.height / 2]] //default position
-  playerTwoInfo.movementVector = [-gridSize, 0]
+function startLoop(){
+  if (gameLoop !== null) return; //exit early if already running
+  stopLoop();
   gameLoop = setInterval(function() {
-    clicked();
+    console.log("A")
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //draw players
     drawPlayerOne();
@@ -270,5 +209,48 @@ function resetGame(){
     detectWallCollision();
     detectSelfCollision();
     detectOtherCollision();
-  }, 50)
+}, 50)
+}
+function stopLoop(){
+  clearInterval(gameLoop); // Stops the interval
+  gameLoop = null;
+  console.log("Loop stopped.");
+}
+
+document.getElementById("start").addEventListener("click", function() {
+  document.getElementById("hud").style = "display:none;"
+  resetGame();
+  startLoop();
+})
+
+function gameOver(winner) {
+  isGameOver = true
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById("hud").style = "display:flex;"
+  if(winner == 1){
+    title.classList.add("player1")
+    title.innerHTML = "Player 1 Wins"
+    //startExplosion(playerTwoInfo.color, playerTwoInfo.body[0][0], playerTwoInfo.body[0][1])
+  }else if(winner == 2){
+    title.classList.add("player2")
+    title.innerHTML = "Player 2 Wins"
+    //startExplosion(playerOneInfo.color, playerOneInfo.body[0][0], playerOneInfo.body[0][1])
+  }
+}
+
+//this function handles resetting the game so you don't have to refresh the page
+function resetGame(){
+  console.log("RESET CALLED")
+  isGameOver = false
+  playerOneInfo.alive = true
+  playerTwoInfo.alive = true
+
+  playerOneInfo.body = [[60, canvas.height / 2]]
+  playerOneInfo.movementVector = [gridSize, 0]
+
+
+  playerTwoInfo.body = [[canvas.width - 60, canvas.height / 2]] //default position
+  playerTwoInfo.movementVector = [-gridSize, 0]
+
+  console.log(playerOneInfo);
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css">
+    <link rel="manifest" href="/manifest.json">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#000000">
+  </head>
+  <body>
+    <iframe class="amp" src="amp.html" width="275" height="350"></iframe>
+
+    <script>
+      const ampFrame = document.querySelector('.amp');
+      const baseWidth = 275;
+      const baseHeight = 350;
+
+      function scaleAmpToViewport() {
+        const scaleX = window.innerWidth / baseWidth;
+        const scaleY = window.innerHeight / baseHeight;
+        ampFrame.style.transform = `scale(${scaleX}, ${scaleY})`;
+      }
+
+      window.addEventListener('resize', scaleAmpToViewport);
+      scaleAmpToViewport();
+    </script>
+  </body>
+</html>
